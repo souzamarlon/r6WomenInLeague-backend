@@ -3,16 +3,28 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "queue": "nodemon src/queue.js",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start": "node dist/server.js",
+    "queueProd": "node dist/queue.js"
+  },
   "dependencies": {
+    "@sentry/node": "5.15.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "date-fns": "^2.0.0-beta.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.9",
     "multer": "^1.4.2",
     "pg": "^8.0.2",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.6",
+    "youch": "^2.0.10",
     "yup": "^0.28.3"
   },
   "devDependencies": {

@@ -22,4 +22,6 @@ routes.post('/files', upload.single('file'), FileController.store);
 // Admin features:
 routes.use(authMiddleware);
 
+routes.put('/users', UserController.update);
+
 export default routes;

@@ -15,6 +15,7 @@ class User extends Model {
         times: Sequelize.STRING,
         play_style: Sequelize.STRING,
         banned: Sequelize.BOOLEAN,
+        discord_user: Sequelize.STRING,
       },
       {
         sequelize,

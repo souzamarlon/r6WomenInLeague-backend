@@ -59,6 +59,12 @@ class UserController {
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string().email(),
+      uplay: Yup.string(),
+      ranked: Yup.boolean(),
+      competition: Yup.boolean(),
+      times: Yup.string(),
+      play_style: Yup.string(),
+      discord_user: Yup.string(),
       oldPassword: Yup.string().min(6),
       password: Yup.string()
         .min(6)
@@ -69,28 +75,48 @@ class UserController {
         password ? field.required().oneOf([Yup.ref('password')]) : field
       ),
     });
+
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
-    const { email, oldPassword } = req.body;
+
+    const { email, uplay, oldPassword } = req.body;
     const user = await User.findByPk(req.userId);
+
     if (email !== user.email) {
       const userExists = await User.findOne({
         where: { email },
       });
+
       if (userExists) {
-        return res.status(400).json({ error: 'User already exists!' });
+        return res
+          .status(400)
+          .json({ error: 'This email address is already used!' });
       }
     }
+
+    if (uplay !== user.uplay) {
+      const uplayExists = await User.findOne({
+        where: { uplay },
+      });
+
+      if (uplayExists) {
+        return res
+          .status(400)
+          .json({ error: 'This Uplay Nickname is already used!' });
+      }
+    }
+
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
       return res.status(401).json({ error: 'Password does not match!' });
     }
-    const { id, name, provider } = await user.update(req.body);
+
+    const { id, name } = await user.update(req.body);
     return res.json({
       id,
       name,
       email,
-      provider,
+      uplay,
     });
   }
 }

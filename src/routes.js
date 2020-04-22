@@ -4,6 +4,7 @@ import multer from 'multer';
 import multerConfig from './config/multer';
 
 import UserController from './app/controllers/UserController';
+import FriendshipController from './app/controllers/FriendshipController';
 
 import SessionController from './app/controllers/SessionController';
 
@@ -21,6 +22,8 @@ routes.post('/files', upload.single('file'), FileController.store);
 
 // Admin features:
 routes.use(authMiddleware);
+
+routes.post('/friendship', FriendshipController.store);
 
 routes.put('/users', UserController.update);
 

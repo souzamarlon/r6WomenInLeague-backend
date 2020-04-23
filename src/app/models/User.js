@@ -31,7 +31,10 @@ class User extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Friendship, { foreignKey: 'user_id', as: 'user' });
+    this.hasMany(models.Friendship, {
+      foreignKey: 'user_id',
+      as: 'user',
+    });
     this.hasMany(models.Friendship, {
       foreignKey: 'user_friend',
       as: 'friend',

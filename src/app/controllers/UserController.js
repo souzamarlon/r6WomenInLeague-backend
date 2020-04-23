@@ -7,7 +7,7 @@ class UserController {
   async index(req, res) {
     const { play_style, competition, ranked, times } = req.body;
 
-    const name = await User.findAll({
+    const searchUsers = await User.findAll({
       where: {
         play_style,
         competition,
@@ -18,6 +18,7 @@ class UserController {
         {
           model: Friendship,
           as: 'user',
+          required: false,
           where: {
             user_friend: { [Op.ne]: req.userId },
           },
@@ -25,10 +26,15 @@ class UserController {
         {
           model: Friendship,
           as: 'friend',
+          required: false,
+          where: {
+            user_id: { [Op.ne]: req.userId },
+          },
         },
       ],
     });
-    return res.json(name);
+
+    return res.json(searchUsers);
   }
 
   async store(req, res) {

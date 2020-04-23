@@ -13,6 +13,7 @@ class UserController {
         competition,
         ranked,
         times,
+        id: { [Op.ne]: req.userId },
       },
       include: [
         {

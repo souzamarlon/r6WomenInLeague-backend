@@ -23,9 +23,10 @@ routes.post('/files', upload.single('file'), FileController.store);
 // Admin features:
 routes.use(authMiddleware);
 
+routes.get('/users', UserController.index);
+routes.put('/users', UserController.update);
+
 routes.post('/friendship', FriendshipController.store);
 routes.put('/friendship/:id', FriendshipController.update);
-
-routes.put('/users', UserController.update);
 
 export default routes;

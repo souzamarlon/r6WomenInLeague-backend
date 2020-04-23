@@ -1,10 +1,30 @@
 import * as Yup from 'yup';
 
 import User from '../models/User';
+import Friendship from '../models/Friendship';
 
 class UserController {
   async index(req, res) {
-    const name = await User.findAll();
+    const { play_style, competition, ranked, times } = req.body;
+
+    const name = await User.findAll({
+      where: {
+        play_style,
+        competition,
+        ranked,
+        times,
+      },
+      include: [
+        {
+          model: Friendship,
+          as: 'user',
+        },
+        {
+          model: Friendship,
+          as: 'friend',
+        },
+      ],
+    });
     return res.json(name);
   }
 

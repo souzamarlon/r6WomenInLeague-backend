@@ -1,5 +1,3 @@
-import * as Yup from 'yup';
-
 import Friendship from '../models/Friendship';
 
 class FriendshipController {

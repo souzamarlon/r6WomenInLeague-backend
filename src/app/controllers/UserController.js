@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-
+import { Op } from 'sequelize';
 import User from '../models/User';
 import Friendship from '../models/Friendship';
 
@@ -18,6 +18,9 @@ class UserController {
         {
           model: Friendship,
           as: 'user',
+          where: {
+            user_friend: { [Op.ne]: req.userId },
+          },
         },
         {
           model: Friendship,

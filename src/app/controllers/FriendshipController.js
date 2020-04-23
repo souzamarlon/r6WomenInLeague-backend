@@ -11,6 +11,13 @@ class FriendshipController {
 
     return res.json(friendCreated);
   }
+
+  async update(req, res) {
+    const findFriend = await Friendship.findByPk(req.params.id);
+
+    const newUpdate = await findFriend.update(req.body);
+    return res.json(newUpdate);
+  }
 }
 
 export default new FriendshipController();

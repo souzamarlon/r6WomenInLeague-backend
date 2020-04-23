@@ -24,6 +24,7 @@ routes.post('/files', upload.single('file'), FileController.store);
 routes.use(authMiddleware);
 
 routes.post('/friendship', FriendshipController.store);
+routes.put('/friendship/:id', FriendshipController.update);
 
 routes.put('/users', UserController.update);
 

@@ -5,6 +5,7 @@ class Friendship extends Model {
     super.init(
       {
         accepted: Sequelize.BOOLEAN,
+        expose_fake: Sequelize.BOOLEAN,
       },
       {
         sequelize,

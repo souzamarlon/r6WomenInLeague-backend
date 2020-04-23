@@ -1,9 +1,29 @@
+import { Op } from 'sequelize';
 import Friendship from '../models/Friendship';
 
 class FriendshipController {
   async store(req, res) {
     const user_id = req.userId;
     const { user_friend } = req.body;
+
+    const friendRequested = await Friendship.findAll({
+      where: {
+        user_friend: { [Op.or]: [req.userId, user_friend] },
+        user_id: { [Op.or]: [req.userId, user_friend] },
+      },
+    });
+
+    if (user_friend === req.userId) {
+      return res
+        .status(400)
+        .json({ error: 'You can not send friend request to yourself.' });
+    }
+
+    if (friendRequested.length) {
+      return res
+        .status(400)
+        .json({ error: 'You already have a friend request' });
+    }
 
     const friendCreated = await Friendship.create({ user_id, user_friend });
 

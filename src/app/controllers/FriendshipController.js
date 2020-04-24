@@ -1,7 +1,107 @@
 import { Op } from 'sequelize';
 import Friendship from '../models/Friendship';
+import User from '../models/User';
 
 class FriendshipController {
+  async index(req, res) {
+    const { accepted } = req.query;
+
+    if (accepted) {
+      const friendList = await Friendship.findAll({
+        where: {
+          accepted,
+          [Op.or]: [{ user_id: req.userId }, { user_friend: req.userId }],
+        },
+        include: [
+          {
+            model: User,
+            as: 'user',
+            required: false,
+            where: {
+              banned: false,
+            },
+            attributes: [
+              'id',
+              'name',
+              'uplay',
+              'ranked',
+              'competition',
+              'times',
+              'play_style',
+              'discord_user',
+            ],
+          },
+          {
+            model: User,
+            as: 'friend',
+            required: false,
+            where: {
+              banned: false,
+            },
+            attributes: [
+              'id',
+              'name',
+              'uplay',
+              'ranked',
+              'competition',
+              'times',
+              'play_style',
+              'discord_user',
+            ],
+          },
+        ],
+      });
+      return res.json(friendList);
+    }
+
+    const friendList = await Friendship.findAll({
+      where: {
+        accepted: false,
+        [Op.or]: [{ user_id: req.userId }, { user_friend: req.userId }],
+      },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          required: false,
+          where: {
+            banned: false,
+          },
+          attributes: [
+            'id',
+            'name',
+            'uplay',
+            'ranked',
+            'competition',
+            'times',
+            'play_style',
+            'discord_user',
+          ],
+        },
+        {
+          model: User,
+          as: 'friend',
+          required: false,
+          where: {
+            banned: false,
+          },
+          attributes: [
+            'id',
+            'name',
+            'uplay',
+            'ranked',
+            'competition',
+            'times',
+            'play_style',
+            'discord_user',
+          ],
+        },
+      ],
+    });
+
+    return res.json(friendList);
+  }
+
   async store(req, res) {
     const user_id = req.userId;
     const { user_friend } = req.body;

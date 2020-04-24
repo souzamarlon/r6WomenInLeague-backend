@@ -14,6 +14,7 @@ class UserController {
         ranked,
         times,
         id: { [Op.ne]: req.userId },
+        banned: false,
       },
       include: [
         {

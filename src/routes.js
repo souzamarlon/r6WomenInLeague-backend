@@ -26,6 +26,7 @@ routes.use(authMiddleware);
 routes.get('/users', UserController.index);
 routes.put('/users', UserController.update);
 
+routes.get('/friendship', FriendshipController.index);
 routes.post('/friendship', FriendshipController.store);
 routes.put('/friendship/:id', FriendshipController.update);
 

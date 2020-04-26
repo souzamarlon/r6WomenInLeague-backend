@@ -23,14 +23,30 @@ class SessionController {
       return res.status(401).json({ error: 'Password does not match!' });
     }
 
-    const { id, name, provider } = user;
+    const {
+      id,
+      name,
+      uplay,
+      ranked,
+      competition,
+      times,
+      play_style,
+      banned,
+      discord_user,
+    } = user;
 
     return res.json({
       user: {
         id,
         name,
         email,
-        provider,
+        uplay,
+        ranked,
+        competition,
+        times,
+        play_style,
+        banned,
+        discord_user,
       },
       token: jwt.sign({ id }, authConfig.secret, {
         expiresIn: authConfig.expiresIn,

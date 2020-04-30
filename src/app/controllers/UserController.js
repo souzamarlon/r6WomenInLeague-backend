@@ -5,7 +5,7 @@ import Friendship from '../models/Friendship';
 
 class UserController {
   async index(req, res) {
-    const { play_style, competition, ranked, times } = req.body;
+    const { play_style, competition, ranked, times } = req.query;
 
     const searchUsers = await User.findAll({
       where: {

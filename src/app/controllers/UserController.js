@@ -16,6 +16,17 @@ class UserController {
         id: { [Op.ne]: req.userId },
         banned: false,
       },
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'uplay',
+        'ranked',
+        'competition',
+        'times',
+        'play_style',
+        'discord_user',
+      ],
       include: [
         {
           model: Friendship,

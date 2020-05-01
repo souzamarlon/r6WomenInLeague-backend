@@ -10,6 +10,8 @@ import SessionController from './app/controllers/SessionController';
 
 import FileController from './app/controllers/FileController';
 
+import R6PlayerInfoController from './app/controllers/R6PlayerInfoController';
+
 import authMiddleware from './app/middlewares/auth';
 
 const routes = new Router();
@@ -29,5 +31,7 @@ routes.put('/users', UserController.update);
 routes.get('/friendship', FriendshipController.index);
 routes.post('/friendship', FriendshipController.store);
 routes.put('/friendship/:id', FriendshipController.update);
+
+routes.get('/stats', R6PlayerInfoController.index);
 
 export default routes;

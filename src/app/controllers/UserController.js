@@ -26,6 +26,7 @@ class UserController {
         'times',
         'play_style',
         'discord_user',
+        'region',
       ],
       include: [
         {

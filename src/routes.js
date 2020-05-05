@@ -21,6 +21,7 @@ routes.post('/sessions', SessionController.store);
 routes.post('/users', UserController.store);
 
 routes.post('/files', upload.single('file'), FileController.store);
+routes.get('/stats', R6PlayerInfoController.index);
 
 // Admin features:
 routes.use(authMiddleware);
@@ -31,7 +32,5 @@ routes.put('/users', UserController.update);
 routes.get('/friendship', FriendshipController.index);
 routes.post('/friendship', FriendshipController.store);
 routes.put('/friendship/:id', FriendshipController.update);
-
-routes.get('/stats', R6PlayerInfoController.index);
 
 export default routes;

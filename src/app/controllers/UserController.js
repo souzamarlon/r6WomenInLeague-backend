@@ -55,6 +55,7 @@ class UserController {
       name: Yup.string().required(),
       email: Yup.string().email().required(),
       password: Yup.string().required().min(6),
+      region: Yup.string().required(),
     });
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
@@ -84,6 +85,7 @@ class UserController {
       competition,
       times,
       play_style,
+      region,
     } = await User.create(req.body);
 
     return res.json({
@@ -94,6 +96,7 @@ class UserController {
       competition,
       times,
       play_style,
+      region,
     });
   }
 

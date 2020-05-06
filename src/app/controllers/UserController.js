@@ -5,9 +5,21 @@ import Friendship from '../models/Friendship';
 
 class UserController {
   async index(req, res) {
-    const { play_style, competition, ranked, times } = req.query;
+    const {
+      play_style,
+      competition,
+      ranked,
+      times,
+      page,
+      per_page,
+    } = req.query;
+    const offset = (page - 1) * per_page;
+    const limit = per_page;
 
     const searchUsers = await User.findAll({
+      offset,
+      limit,
+      order: [['id', 'DESC']],
       where: {
         play_style,
         competition,

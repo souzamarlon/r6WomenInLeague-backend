@@ -16,6 +16,50 @@ class UserController {
     const offset = (page - 1) * per_page;
     const limit = per_page;
 
+    if (!play_style) {
+      const searchUsers = await User.findAll({
+        offset,
+        limit,
+        order: [['id', 'DESC']],
+        where: {
+          id: { [Op.ne]: req.userId },
+          banned: false,
+        },
+        attributes: [
+          'id',
+          'name',
+          'email',
+          'uplay',
+          'ranked',
+          'competition',
+          'times',
+          'play_style',
+          'discord_user',
+          'region',
+        ],
+        include: [
+          {
+            model: Friendship,
+            as: 'user',
+            required: false,
+            where: {
+              user_friend: { [Op.ne]: req.userId },
+            },
+          },
+          {
+            model: Friendship,
+            as: 'friend',
+            required: false,
+            where: {
+              user_id: { [Op.ne]: req.userId },
+            },
+          },
+        ],
+      });
+
+      return res.json(searchUsers);
+    }
+
     const searchUsers = await User.findAll({
       offset,
       limit,

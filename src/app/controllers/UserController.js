@@ -3,6 +3,8 @@ import { Op } from 'sequelize';
 import User from '../models/User';
 import Friendship from '../models/Friendship';
 
+import Cache from '../../config/Cache';
+
 class UserController {
   async index(req, res) {
     const {
@@ -17,7 +19,12 @@ class UserController {
     const limit = per_page;
 
     if (!play_style) {
-      const searchUsers = await User.findAll({
+      const cached = await Cache.get('allUsers');
+      if (cached) {
+        return res.json(cached);
+      }
+
+      const allUsers = await User.findAll({
         offset,
         limit,
         order: [['id', 'DESC']],
@@ -57,10 +64,17 @@ class UserController {
         ],
       });
 
-      return res.json(searchUsers);
+      await Cache.set('allUsers', allUsers);
+
+      return res.json(allUsers);
     }
 
-    const searchUsers = await User.findAll({
+    const cached = await Cache.get('users');
+    if (cached) {
+      return res.json(cached);
+    }
+
+    const users = await User.findAll({
       offset,
       limit,
       order: [['id', 'DESC']],
@@ -104,7 +118,7 @@ class UserController {
       ],
     });
 
-    return res.json(searchUsers);
+    return res.json(users);
   }
 
   async store(req, res) {

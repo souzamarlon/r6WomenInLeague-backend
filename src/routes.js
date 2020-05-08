@@ -14,11 +14,14 @@ import R6PlayerInfoController from './app/controllers/R6PlayerInfoController';
 
 import authMiddleware from './app/middlewares/auth';
 
+import validateUserStore from './app/validators/UserStore';
+import validateUserUpdate from './app/validators/UserUpdate';
+
 const routes = new Router();
 const upload = multer(multerConfig);
 
 routes.post('/sessions', SessionController.store);
-routes.post('/users', UserController.store);
+routes.post('/users', validateUserStore, UserController.store);
 
 routes.post('/files', upload.single('file'), FileController.store);
 routes.get('/stats', R6PlayerInfoController.index);
@@ -27,7 +30,7 @@ routes.get('/stats', R6PlayerInfoController.index);
 routes.use(authMiddleware);
 
 routes.get('/users', UserController.index);
-routes.put('/users', UserController.update);
+routes.put('/users', validateUserUpdate, UserController.update);
 
 routes.get('/friendship', FriendshipController.index);
 routes.post('/friendship', FriendshipController.store);

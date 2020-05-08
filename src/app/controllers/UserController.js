@@ -18,6 +18,7 @@ class UserController {
     const offset = (page - 1) * per_page;
     const limit = per_page;
 
+    // This If it will return all the users in the Dashboard page.
     if (!play_style) {
       const cached = await Cache.get('allUsers');
       if (cached) {
@@ -69,7 +70,18 @@ class UserController {
       return res.json(allUsers);
     }
 
-    const cached = await Cache.get('users');
+    // It will return the users based on the queries. This users will appear in the search page.
+
+    // play_style,
+    // competition,
+    // ranked,
+    // times,
+    // page,
+    // per_page,
+
+    const cacheKey = `play_style:${play_style}:users${page}`;
+    const cached = await Cache.get(cacheKey);
+
     if (cached) {
       return res.json(cached);
     }
@@ -118,6 +130,8 @@ class UserController {
       ],
     });
 
+    await Cache.set(cacheKey, users);
+
     return res.json(users);
   }
 
@@ -158,6 +172,14 @@ class UserController {
       play_style,
       region,
     } = await User.create(req.body);
+
+    if (uplay) {
+      await Cache.invalidate('allUsers');
+    }
+
+    // It will delete all the keys when it has a new user
+    // Its not working yet
+    // await Cache.invalidatePrefix(`play_style:${play_style}:users`);
 
     return res.json({
       name,

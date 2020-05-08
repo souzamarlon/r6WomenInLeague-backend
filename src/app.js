@@ -16,14 +16,14 @@ class App {
   constructor() {
     this.server = express();
 
-    // Sentry.init(sentryConfig);
+    Sentry.init(sentryConfig);
     this.middleware();
     this.routes();
-    // this.exceptionHandler();
+    this.exceptionHandler();
   }
 
   middleware() {
-    // this.server.use(Sentry.Handlers.requestHandler());
+    this.server.use(Sentry.Handlers.requestHandler());
     this.server.use(cors());
 
     this.server.use(express.json());
@@ -35,20 +35,20 @@ class App {
 
   routes() {
     this.server.use(routes);
-    // this.server.use(Sentry.Handlers.errorHandler());
+    this.server.use(Sentry.Handlers.errorHandler());
   }
 
-  // exceptionHandler() {
-  //   this.server.use(async (err, req, res, next) => {
-  //     if (process.env.NODE_ENV === 'development') {
-  //       const errors = await new Youch(err, req).toJSON();
+  exceptionHandler() {
+    this.server.use(async (err, req, res, next) => {
+      if (process.env.NODE_ENV === 'development') {
+        const errors = await new Youch(err, req).toJSON();
 
-  //       return res.status(500).json(errors);
-  //     }
+        return res.status(500).json(errors);
+      }
 
-  //     return res.status(500).json({ error: 'internal server error' });
-  //   });
-  // }
+      return res.status(500).json({ error: 'internal server error' });
+    });
+  }
 }
 
 export default new App().server;

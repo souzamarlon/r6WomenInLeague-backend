@@ -141,6 +141,7 @@ class UserController {
     });
 
     if (userExists) {
+      // throw new Error('This email address is already used!');
       return res
         .status(400)
         .json({ error: 'This email address is already used!' });

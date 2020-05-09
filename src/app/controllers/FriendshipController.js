@@ -4,10 +4,15 @@ import User from '../models/User';
 
 class FriendshipController {
   async index(req, res) {
-    const { accepted } = req.query;
+    const { accepted, page, per_page } = req.query;
+    const offset = (page - 1) * per_page;
+    const limit = per_page;
 
     if (accepted) {
       const friendList = await Friendship.findAll({
+        offset,
+        limit,
+        order: [['id', 'ASC']],
         where: {
           accepted,
           [Op.or]: [{ user_id: req.userId }, { user_friend: req.userId }],
@@ -55,6 +60,9 @@ class FriendshipController {
     }
 
     const friendList = await Friendship.findAll({
+      offset,
+      limit,
+      order: [['id', 'ASC']],
       where: {
         accepted: false,
         [Op.or]: [{ user_id: req.userId }, { user_friend: req.userId }],

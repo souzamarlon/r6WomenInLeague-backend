@@ -86,6 +86,7 @@ class FriendshipController {
             'times',
             'play_style',
             'discord_user',
+            'region',
           ],
         },
         {
@@ -104,6 +105,7 @@ class FriendshipController {
             'times',
             'play_style',
             'discord_user',
+            'region',
           ],
         },
       ],

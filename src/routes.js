@@ -35,5 +35,6 @@ routes.put('/users', validateUserUpdate, UserController.update);
 routes.get('/friendship', FriendshipController.index);
 routes.post('/friendship', FriendshipController.store);
 routes.put('/friendship/:id', FriendshipController.update);
+routes.delete('/friendship/:id', FriendshipController.delete);
 
 export default routes;

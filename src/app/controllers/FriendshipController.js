@@ -148,6 +148,16 @@ class FriendshipController {
     const newUpdate = await findFriend.update(req.body);
     return res.json(newUpdate);
   }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    const findFriend = await Friendship.findByPk(id);
+
+    const deleted = await findFriend.destroy();
+
+    return res.json(deleted);
+  }
 }
 
 export default new FriendshipController();

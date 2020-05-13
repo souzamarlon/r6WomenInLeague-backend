@@ -19,10 +19,10 @@ class UserController {
 
     // This If it will return all the users in the Dashboard page.
     if (!play_style) {
-      const cached = await Cache.get('allUsers');
-      if (cached) {
-        return res.json(cached);
-      }
+      //   const cached = await Cache.get('allUsers');
+      //   if (cached) {
+      //     return res.json(cached);
+      //   }
 
       const allUsers = await User.findAll({
         offset,
@@ -49,41 +49,63 @@ class UserController {
             model: Friendship,
             as: 'user',
             required: false,
-            where: {
-              user_friend: { [Op.ne]: req.userId },
-            },
+            attributes: ['user_id', 'user_friend', 'accepted', 'expose_fake'],
+            // where: {
+            //   user_friend: { [Op.ne]: req.userId },
+            // },
           },
           {
             model: Friendship,
             as: 'friend',
             required: false,
-            where: {
-              user_id: { [Op.ne]: req.userId },
-            },
+            attributes: ['user_id', 'user_friend', 'accepted', 'expose_fake'],
+            // where: {
+            //   user_id: { [Op.ne]: req.userId },
+            // },
           },
         ],
       });
 
-      await Cache.set('allUsers', allUsers);
+      // await Cache.set('allUsers', allUsers);
+
+      // user_id = Armazena o usuário que enviou a solicitação e user_friend armazena o usuário que recebeu a solicitação.
+      const { userId } = req;
+
+      // Find the friends which userId added and removed from the array.
+      allUsers.filter(async function test(x) {
+        x.user.forEach((value) =>
+          value.user_friend === userId
+            ? allUsers.splice(
+                allUsers.findIndex((v) => v.id === value.user_id),
+                1
+              )
+            : null
+        );
+      });
+
+      // Find the friends which added your userId and removed from the array.
+      allUsers.filter(async function test2(x) {
+        x.friend.forEach((value) =>
+          value.user_id === userId
+            ? allUsers.splice(
+                allUsers.findIndex((v) => v.id === value.user_friend),
+                1
+              )
+            : null
+        );
+      });
 
       return res.json(allUsers);
     }
 
     // It will return the users based on the queries. This users will appear in the search page.
 
-    // play_style,
-    // competition,
-    // ranked,
-    // times,
-    // page,
-    // per_page,
+    // const cacheKey = `play_style:${play_style}:users${page}`;
+    // const cached = await Cache.get(cacheKey);
 
-    const cacheKey = `play_style:${play_style}:users${page}`;
-    const cached = await Cache.get(cacheKey);
-
-    if (cached) {
-      return res.json(cached);
-    }
+    // if (cached) {
+    //   return res.json(cached);
+    // }
 
     const users = await User.findAll({
       offset,
@@ -129,7 +151,7 @@ class UserController {
       ],
     });
 
-    await Cache.set(cacheKey, users);
+    // await Cache.set(cacheKey, users);
 
     return res.json(users);
   }

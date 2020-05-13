@@ -8,7 +8,7 @@ import cors from 'cors';
 import 'express-async-errors';
 
 import routes from './routes';
-import sentryConfig from './config/sentry';
+// import sentryConfig from './config/sentry';
 
 import './database';
 
@@ -16,14 +16,14 @@ class App {
   constructor() {
     this.server = express();
 
-    Sentry.init(sentryConfig);
+    // Sentry.init(sentryConfig);
     this.middleware();
     this.routes();
     this.exceptionHandler();
   }
 
   middleware() {
-    this.server.use(Sentry.Handlers.requestHandler());
+    // this.server.use(Sentry.Handlers.requestHandler());
     this.server.use(cors());
 
     this.server.use(express.json());
@@ -35,7 +35,7 @@ class App {
 
   routes() {
     this.server.use(routes);
-    this.server.use(Sentry.Handlers.errorHandler());
+    // this.server.use(Sentry.Handlers.errorHandler());
   }
 
   exceptionHandler() {

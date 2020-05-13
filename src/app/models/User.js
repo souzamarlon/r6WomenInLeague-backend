@@ -40,6 +40,7 @@ class User extends Model {
       foreignKey: 'user_friend',
       as: 'friend',
     });
+
     this.belongsTo(models.File, { foreignKey: 'avatar_id', as: 'avatar' });
   }
 

@@ -15,6 +15,7 @@ class FriendshipController {
         order: [['id', 'ASC']],
         where: {
           accepted,
+          expose_fake: false,
           [Op.or]: [{ user_id: req.userId }, { user_friend: req.userId }],
         },
         include: [
@@ -67,6 +68,7 @@ class FriendshipController {
       order: [['id', 'ASC']],
       where: {
         accepted: false,
+        expose_fake: false,
         [Op.or]: [{ user_id: req.userId }, { user_friend: req.userId }],
       },
       include: [

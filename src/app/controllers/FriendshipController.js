@@ -118,7 +118,7 @@ class FriendshipController {
 
   async store(req, res) {
     const user_id = req.userId;
-    const { user_friend } = req.body;
+    const user_friend = req.params.id;
 
     const friendRequested = await Friendship.findAll({
       where: {

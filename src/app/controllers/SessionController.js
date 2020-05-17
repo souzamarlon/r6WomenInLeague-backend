@@ -31,6 +31,7 @@ class SessionController {
       competition,
       times,
       play_style,
+      region,
       banned,
       discord_user,
     } = user;
@@ -45,6 +46,7 @@ class SessionController {
         competition,
         times,
         play_style,
+        region,
         banned,
         discord_user,
       },

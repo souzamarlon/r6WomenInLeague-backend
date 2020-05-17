@@ -221,6 +221,7 @@ class UserController {
     const {
       id,
       name,
+      discord_user,
       ranked,
       competition,
       times,
@@ -230,6 +231,9 @@ class UserController {
     return res.json({
       id,
       name,
+      email,
+      uplay,
+      discord_user,
       ranked,
       competition,
       times,

@@ -47,10 +47,9 @@ From your command line:
 $ git clone https://github.com/souzamarlon/R6WomenInLeague-backend
 
 # Go into the repository
-$ cd bootcamp-fastfeet
+$ cd R6WomenInLeague-backend
 
 # Install dependencies for backend:
-$ cd backend
 $ yarn
 
 # Note:

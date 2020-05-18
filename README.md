@@ -3,7 +3,7 @@
 </h1>
 
 <h4 align="center">
-  It is an App to help the Women find anothers to play Rainbow Six Siege together. Our goal is help the women community be stronger inside of Rainbow Six Siege.
+In order to fight discrimination, out goal is to help women in R6 to find a safe space in during the game experience and connect with other women around the globe.
 </h4>
 
 

@@ -117,7 +117,7 @@ class UserController {
           as: 'user',
           required: false,
           where: {
-            user_friend: { [Op.ne]: req.userId },
+            user_friend: { [Op.eq]: req.userId },
           },
         },
         {
@@ -125,15 +125,19 @@ class UserController {
           as: 'friend',
           required: false,
           where: {
-            user_id: { [Op.ne]: req.userId },
+            user_id: { [Op.eq]: req.userId },
           },
         },
       ],
     });
 
+    const filterSearchUsers = users.filter(function (entry) {
+      return entry.friend.length || entry.user.length ? null : entry;
+    });
+
     // await Cache.set(cacheKey, users);
 
-    return res.json(users);
+    return res.json(filterSearchUsers);
   }
 
   async store(req, res) {

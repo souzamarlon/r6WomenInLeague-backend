@@ -1,5 +1,5 @@
 <h1 align="center">
-    R6 Women in League
+    R6 WOMEN'S ALLIANCE
 </h1>
 
 <h4 align="center">

@@ -9,7 +9,7 @@ It is an App to help the Women find anothers to play Rainbow Six Siege together.
 
 <p align="center">
   <a href="#rocket-Libraries and Technologies">Libraries and Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#information_source-how-to-use">How To Use</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#information_source-how-to-use">How To Use</a>&nbsp;&nbsp;&nbsp;
 </p>
 
 ## :rocket: Libraries and Technologies

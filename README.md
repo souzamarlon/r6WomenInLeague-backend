@@ -3,7 +3,7 @@
 </h1>
 
 <h4 align="center">
-In order to fight discrimination, out goal is to help women in R6 to find a safe space in during the game experience and connect with other women around the globe.
+In order to fight against discrimination, our goal is to help women in R6 to find a safe space during the game experience and connect with other women around the globe.
 </h4>
 
 

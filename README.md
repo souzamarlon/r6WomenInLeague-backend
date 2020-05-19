@@ -66,6 +66,7 @@ $ yarn dev
 $ yarn build
 $ yarn start
 ```
+<h4 align="center">You can find the front end project clicking [here!](https://github.com/souzamarlon/R6WomenInLeague-frontend)</h4>
 ---
 Created by Marlon da Silva Souza :wave: [LinkedIn!](https://www.linkedin.com/in/marlonssouza/)
 

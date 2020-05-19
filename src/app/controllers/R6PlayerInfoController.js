@@ -5,14 +5,15 @@ class R6PlayerInfoController {
   async index(req, res) {
     const { username, platform, type } = req.query;
 
-    // const cached = await Cache.get('playerInfo');
-    // if (cached) {
-    //   return res.json(cached);
-    // }
+    const cacheKey = `username:${username}`;
+    const cached = await Cache.get(cacheKey);
+    if (cached) {
+      return res.json(cached);
+    }
 
     const playerInfo = await apiR6.get(`stats/${username}/${platform}/${type}`);
 
-    // await Cache.set('playerInfo', playerInfo);
+    await Cache.set(cacheKey, playerInfo.data);
 
     return res.json(playerInfo.data);
   }

@@ -9,6 +9,7 @@ class Cache {
     });
   }
 
+  // 60 seconds * 60 minutes * 24 hours = it will take 24 hours to expire the cache.
   set(key, value) {
     return this.redis.set(key, JSON.stringify(value), 'EX', 60 * 60 * 24);
   }

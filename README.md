@@ -9,7 +9,8 @@ In order to fight against discrimination, our goal is to help women in R6 to fin
 
 <p align="center">
   <a href="#rocket-Libraries and Technologies">Libraries and Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#information_source-how-to-use">How To Use</a>&nbsp;&nbsp;&nbsp;
+  <a href="#information_source-how-to-use">How To Use</a>&nbsp;&nbsp;&nbsp|&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/souzamarlon/R6WomenInLeague-frontend">Front-end project</a>&nbsp;&nbsp;&nbsp;
 </p>
 
 ## :rocket: Libraries and Technologies
@@ -66,7 +67,6 @@ $ yarn dev
 $ yarn build
 $ yarn start
 ```
-<h4 align="center">You can find the front end project clicking [here!](https://github.com/souzamarlon/R6WomenInLeague-frontend)</h4>
 ---
 Created by Marlon da Silva Souza :wave: [LinkedIn!](https://www.linkedin.com/in/marlonssouza/)
 

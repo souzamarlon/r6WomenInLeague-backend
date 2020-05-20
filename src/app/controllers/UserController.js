@@ -20,12 +20,15 @@ class UserController {
     // user_id = Armazena o usuário que enviou a solicitação e user_friend armazena o usuário que recebeu a solicitação.
     const { userId } = req;
 
-    // This If it will return all the users in the Dashboard page.
+    // This "If" it will return all the users.
     if (!play_style) {
-      //   const cached = await Cache.get('allUsers');
-      //   if (cached) {
-      //     return res.json(cached);
-      //   }
+      // It will get the key named filterUsers.
+      const cached = await Cache.get('filterUsers');
+
+      // If the key exists it will return the cache saved.
+      if (cached) {
+        return res.json(cached);
+      }
 
       const allUsers = await User.findAll({
         offset,
@@ -69,23 +72,24 @@ class UserController {
         ],
       });
 
-      // await Cache.set('allUsers', allUsers);
-
       const filterUsers = allUsers.filter(function (entry) {
         return entry.friend.length || entry.user.length ? null : entry;
       });
+
+      // It will save the cache in the redis database
+      await Cache.set('filterUsers', filterUsers);
 
       return res.json(filterUsers);
     }
 
     // It will return the users based on the queries. This users will appear in the search page.
 
-    // const cacheKey = `play_style:${play_style}:users${page}`;
-    // const cached = await Cache.get(cacheKey);
+    const cacheKey = `play_style:${play_style}:competition:${competition}:ranked:${ranked}:times:${times}:users${page}`;
+    const cached = await Cache.get(cacheKey);
 
-    // if (cached) {
-    //   return res.json(cached);
-    // }
+    if (cached) {
+      return res.json(cached);
+    }
 
     const users = await User.findAll({
       offset,
@@ -135,7 +139,7 @@ class UserController {
       return entry.friend.length || entry.user.length ? null : entry;
     });
 
-    // await Cache.set(cacheKey, users);
+    await Cache.set(cacheKey, filterSearchUsers);
 
     return res.json(filterSearchUsers);
   }
@@ -171,12 +175,11 @@ class UserController {
     } = await User.create(req.body);
 
     if (uplay) {
-      await Cache.invalidate('allUsers');
+      await Cache.invalidate('filterUsers');
+      await Cache.invalidatePrefix(`play_style:${play_style}`);
     }
 
     // It will delete all the keys when it has a new user
-    // Its not working yet
-    // await Cache.invalidatePrefix(`play_style:${play_style}:users`);
 
     return res.json({
       name,

@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import Friendship from '../models/Friendship';
 import User from '../models/User';
+import Cache from '../../config/Cache';
 
 class FriendshipController {
   async index(req, res) {
@@ -161,12 +162,24 @@ class FriendshipController {
       if (findReports.length >= 4) {
         const userReported = await User.findByPk(id_reported);
 
-        const { id, name, uplay, banned } = await userReported.update({
+        const {
+          id,
+          name,
+          play_style,
+          uplay,
+          banned,
+        } = await userReported.update({
           banned: true,
         });
+
+        // It will update the table friendship with last report.
         await findFriend.update(req.body);
 
-        return res.json(id, name, uplay, banned);
+        // The cache will be deleted
+        await Cache.invalidate('filterUsers');
+        await Cache.invalidatePrefix(`play_style:${play_style}`);
+
+        return res.json({ id, name, play_style, uplay, banned });
       }
     }
 

@@ -147,8 +147,21 @@ class FriendshipController {
   async update(req, res) {
     const findFriend = await Friendship.findByPk(req.params.id);
 
-    const newUpdate = await findFriend.update(req.body);
-    return res.json(newUpdate);
+    const { accepted, expose_fake, id_reported } = await findFriend.update(
+      req.body
+    );
+
+    if (expose_fake) {
+      const findReports = await Friendship.findAll({
+        where: {
+          id_reported,
+        },
+      });
+
+      const
+    }
+
+    return res.json({ accepted, expose_fake, id_reported });
   }
 
   async delete(req, res) {

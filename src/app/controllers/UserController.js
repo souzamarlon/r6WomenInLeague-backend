@@ -194,7 +194,16 @@ class UserController {
   }
 
   async update(req, res) {
-    const { email, uplay, oldPassword } = req.body;
+    const {
+      email,
+      uplay,
+      ranked,
+      competition,
+      times,
+      play_style,
+      oldPassword,
+    } = req.body;
+
     const user = await User.findByPk(req.userId);
 
     if (email !== user.email) {
@@ -225,16 +234,22 @@ class UserController {
       return res.status(401).json({ error: 'Password does not match!' });
     }
 
-    const {
-      id,
-      name,
-      discord_user,
-      ranked,
-      competition,
-      times,
-      play_style,
-      region,
-    } = await user.update(req.body);
+    if (
+      play_style !== user.play_style ||
+      ranked !== user.ranked ||
+      competition !== user.competition ||
+      times !== user.times
+    ) {
+      await Cache.invalidatePrefix(
+        `play_style:${play_style}:competition:${competition}:ranked:${ranked}:times:${times}`
+      );
+      await Cache.invalidatePrefix(
+        `play_style:${user.play_style}:competition:${user.competition}:ranked:${user.ranked}:times:${user.times}`
+      );
+    }
+
+    const { id, name, discord_user, region } = await user.update(req.body);
+
     return res.json({
       id,
       name,

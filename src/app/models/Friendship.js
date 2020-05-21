@@ -6,6 +6,7 @@ class Friendship extends Model {
       {
         accepted: Sequelize.BOOLEAN,
         expose_fake: Sequelize.BOOLEAN,
+        id_reported: Sequelize.INTEGER,
       },
       {
         sequelize,

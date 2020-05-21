@@ -147,10 +147,9 @@ class FriendshipController {
   async update(req, res) {
     const findFriend = await Friendship.findByPk(req.params.id);
 
-    const { accepted, expose_fake, id_reported } = await findFriend.update(
-      req.body
-    );
+    const { expose_fake, id_reported } = req.body;
 
+    // It will check if this user received a report.
     if (expose_fake) {
       const findReports = await Friendship.findAll({
         where: {
@@ -158,8 +157,20 @@ class FriendshipController {
         },
       });
 
-      const
+      // If this user already 4 reports, it will receive a ban in the fifth report.
+      if (findReports.length >= 4) {
+        const userReported = await User.findByPk(id_reported);
+
+        const { id, name, uplay, banned } = await userReported.update({
+          banned: true,
+        });
+        await findFriend.update(req.body);
+
+        return res.json(id, name, uplay, banned);
+      }
     }
+
+    const { accepted } = await findFriend.update(req.body);
 
     return res.json({ accepted, expose_fake, id_reported });
   }

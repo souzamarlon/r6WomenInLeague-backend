@@ -23,6 +23,10 @@ class SessionController {
       return res.status(401).json({ error: 'Password does not match!' });
     }
 
+    if (user.banned) {
+      return res.status(401).json({ error: 'Your account was banned!' });
+    }
+
     const {
       id,
       name,

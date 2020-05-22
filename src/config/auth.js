@@ -1,5 +1,5 @@
 export default {
   secret: process.env.APP_SECRET,
 
-  expiresIn: '1d',
+  expiresIn: '1h',
 };

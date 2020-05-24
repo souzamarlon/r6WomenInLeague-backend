@@ -22,8 +22,11 @@ class UserController {
 
     // This "If" it will return all the users.
     if (!play_style) {
+      // It will create a cache with all the users available to logged user.
+      const cacheKeyAllUsers = `user:${req.userId}:AllUsers${page}`;
+
       // It will get the key named filterUsers.
-      const cached = await Cache.get('filterUsers');
+      const cached = await Cache.get(cacheKeyAllUsers);
 
       // If the key exists it will return the cache saved.
       if (cached) {
@@ -77,7 +80,7 @@ class UserController {
       });
 
       // It will save the cache in the redis database
-      await Cache.set('filterUsers', filterUsers);
+      await Cache.set(cacheKeyAllUsers, filterUsers);
 
       return res.json(filterUsers);
     }
@@ -174,12 +177,12 @@ class UserController {
       region,
     } = await User.create(req.body);
 
+    // It will delete all the keys when it has a new user.
+
     if (uplay) {
-      await Cache.invalidate('filterUsers');
+      await Cache.invalidatePrefix('user');
       await Cache.invalidatePrefix(`play_style:${play_style}`);
     }
-
-    // It will delete all the keys when it has a new user
 
     return res.json({
       name,

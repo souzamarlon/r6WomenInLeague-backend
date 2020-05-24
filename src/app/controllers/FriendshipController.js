@@ -142,6 +142,8 @@ class FriendshipController {
 
     const friendCreated = await Friendship.create({ user_id, user_friend });
 
+    await Cache.invalidatePrefix(`user:${user_id}`);
+
     return res.json(friendCreated);
   }
 
@@ -176,7 +178,7 @@ class FriendshipController {
         await findFriend.update(req.body);
 
         // The cache will be deleted
-        await Cache.invalidate('filterUsers');
+        await Cache.invalidatePrefix('user');
         await Cache.invalidatePrefix(`play_style:${play_style}`);
 
         return res.json({ id, name, play_style, uplay, banned });

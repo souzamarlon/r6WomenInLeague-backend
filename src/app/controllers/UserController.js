@@ -36,7 +36,7 @@ class UserController {
       const allUsers = await User.findAll({
         // offset,
         // limit,
-        order: [['id', 'ASC']],
+        order: [['id', 'DESC']],
         where: {
           id: { [Op.ne]: userId },
           banned: false,

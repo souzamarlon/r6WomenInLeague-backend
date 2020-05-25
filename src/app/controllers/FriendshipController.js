@@ -128,6 +128,8 @@ class FriendshipController {
       },
     });
 
+    const { play_style } = await User.findByPk(user_friend);
+
     if (user_friend === req.userId) {
       return res
         .status(400)
@@ -143,6 +145,7 @@ class FriendshipController {
     const friendCreated = await Friendship.create({ user_id, user_friend });
 
     await Cache.invalidatePrefix(`user:${user_id}`);
+    await Cache.invalidatePrefix(`play_style:${play_style}`);
 
     return res.json(friendCreated);
   }

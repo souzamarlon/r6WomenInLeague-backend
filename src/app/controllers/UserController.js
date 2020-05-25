@@ -15,7 +15,7 @@ class UserController {
       per_page,
     } = req.query;
     const offset = (page - 1) * per_page;
-    const limit = per_page;
+    const limit = page * per_page;
 
     // user_id = Armazena o usuário que enviou a solicitação e user_friend armazena o usuário que recebeu a solicitação.
     const { userId } = req;
@@ -25,7 +25,7 @@ class UserController {
       // It will create a cache with all the users available to logged user.
       const cacheKeyAllUsers = `user:${req.userId}:AllUsers${page}`;
 
-      // It will get the key named filterUsers.
+      // It will get the keys based on the cacheKeyAllUsers.
       const cached = await Cache.get(cacheKeyAllUsers);
 
       // If the key exists it will return the cache saved.
@@ -34,8 +34,8 @@ class UserController {
       }
 
       const allUsers = await User.findAll({
-        offset,
-        limit,
+        // offset,
+        // limit,
         order: [['id', 'ASC']],
         where: {
           id: { [Op.ne]: userId },
@@ -79,24 +79,27 @@ class UserController {
         return entry.friend.length || entry.user.length ? null : entry;
       });
 
-      // It will save the cache in the redis database
-      await Cache.set(cacheKeyAllUsers, filterUsers);
+      const getUsersByPage = filterUsers.slice(offset, limit);
 
-      return res.json(filterUsers);
+      // It will save the cache in the redis database
+      await Cache.set(cacheKeyAllUsers, getUsersByPage);
+
+      return res.json(getUsersByPage);
     }
 
     // It will return the users based on the queries. This users will appear in the search page.
 
     const cacheKey = `play_style:${play_style}:competition:${competition}:ranked:${ranked}:times:${times}:users${page}`;
+
+    // It will get the keys based on the cacheKey.
     const cached = await Cache.get(cacheKey);
 
+    // If the key exists it will return the cache saved.
     if (cached) {
       return res.json(cached);
     }
 
     const users = await User.findAll({
-      offset,
-      limit,
       order: [['id', 'DESC']],
       where: {
         play_style,
@@ -142,9 +145,11 @@ class UserController {
       return entry.friend.length || entry.user.length ? null : entry;
     });
 
-    await Cache.set(cacheKey, filterSearchUsers);
+    const getUsersByPage = filterSearchUsers.slice(offset, limit);
 
-    return res.json(filterSearchUsers);
+    await Cache.set(cacheKey, getUsersByPage);
+
+    return res.json(getUsersByPage);
   }
 
   async store(req, res) {

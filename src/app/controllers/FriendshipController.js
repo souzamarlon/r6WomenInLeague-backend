@@ -145,6 +145,7 @@ class FriendshipController {
     const friendCreated = await Friendship.create({ user_id, user_friend });
 
     await Cache.invalidatePrefix(`user:${user_id}`);
+    await Cache.invalidatePrefix(`user:${user_friend}`);
     await Cache.invalidatePrefix(`play_style:${play_style}`);
 
     return res.json(friendCreated);

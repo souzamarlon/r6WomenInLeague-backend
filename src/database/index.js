@@ -11,7 +11,16 @@ const models = [User, File, Friendship];
 
 class Database {
   constructor() {
-    this.connection = new Sequelize(databaseConfig);
+    // this.connection = new Sequelize(databaseConfig);
+    this.connection = new Sequelize(process.env.DATABASE_URL, {
+      dialect: 'postgres',
+      define: {
+        timestamps: true,
+        underscored: true,
+        underscoredALL: true,
+      },
+    });
+
     this.init();
     this.associate();
     // this.mongo();

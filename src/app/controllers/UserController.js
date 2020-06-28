@@ -6,6 +6,7 @@ import Cache from '../../config/Cache';
 
 class UserController {
   async index(req, res) {
+    // console.log(req.io, req.connectedUsers);
     const {
       play_style,
       competition,

@@ -11,6 +11,7 @@ import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
 
 import R6PlayerInfoController from './app/controllers/R6PlayerInfoController';
+import ChatController from './app/controllers/ChatController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -36,5 +37,7 @@ routes.get('/friendship', FriendshipController.index);
 routes.post('/friendship/:id', FriendshipController.store);
 routes.put('/friendship/:id', FriendshipController.update);
 routes.delete('/friendship/:id', FriendshipController.delete);
+
+routes.post('/chat/:id', ChatController.store);
 
 export default routes;

@@ -38,6 +38,7 @@ routes.post('/friendship/:id', FriendshipController.store);
 routes.put('/friendship/:id', FriendshipController.update);
 routes.delete('/friendship/:id', FriendshipController.delete);
 
+routes.get('/chat/:id', ChatController.index);
 routes.post('/chat/:id', ChatController.store);
 
 export default routes;

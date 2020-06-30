@@ -2,7 +2,7 @@ import Chat from '../schemas/Chat';
 
 class ChatController {
   async index(req, res) {
-    const allMessages = await Chat.find({
+    const allMessages = await Chat.findOne({
       $and: [
         {
           $or: [

@@ -38,31 +38,16 @@ class ChatController {
 
   async update(req, res) {
     const senderId = req.userId;
-    const receiverId = req.params.id;
+    const { id } = req.params;
     const { message } = req.body;
 
-    const allMessages = await Chat.findOne({
-      $and: [
-        {
-          $or: [
-            { senderId: { $eq: senderId } },
-            { senderId: { $eq: receiverId } },
-          ],
-        },
-        {
-          $or: [
-            { receiverId: { $eq: senderId } },
-            { receiverId: { $eq: receiverId } },
-          ],
-        },
-      ],
-    });
+    const allMessages = await Chat.findById(id);
 
     if (!allMessages) {
       return res.status(401).json({ error: 'Any message was found!' });
     }
 
-    const messageUpdate = await allMessages.update({
+    const messageUpdate = await allMessages.updateOne({
       $push: { messages: { user: senderId, message } },
     });
 

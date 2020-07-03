@@ -2,6 +2,7 @@ import Chat from '../schemas/Chat';
 
 class ChatController {
   async index(req, res) {
+    // console.log('TEST', req.connectedUsers);
     const allMessages = await Chat.findOne({
       $and: [
         {

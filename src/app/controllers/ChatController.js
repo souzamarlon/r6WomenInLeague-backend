@@ -38,7 +38,12 @@ class ChatController {
 
     // If the target is connected it will send the messages in real time.
     if (targetSocket) {
-      req.io.to(targetSocket).emit('sendMessage', { user: senderId, message });
+      const { _id } = messageCreated;
+      req.io.to(targetSocket).emit('sendMessage', {
+        chatId: _id,
+        user: senderId,
+        message,
+      });
     }
 
     return res.json(messageCreated);

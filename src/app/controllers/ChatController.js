@@ -2,7 +2,6 @@ import Chat from '../schemas/Chat';
 
 class ChatController {
   async index(req, res) {
-    // console.log('TEST', req.connectedUsers);
     const allMessages = await Chat.findOne({
       $and: [
         {
@@ -27,6 +26,7 @@ class ChatController {
     const senderId = req.userId;
     const receiverId = req.params.id;
     const { message } = req.body;
+    // console.log('TEST', );
 
     const messageCreated = await Chat.create({
       senderId,
@@ -44,6 +44,12 @@ class ChatController {
 
     const allMessages = await Chat.findById(id);
 
+    // I need to know who it will receive the message by socket Io.
+    const receiverId =
+      allMessages.senderId === senderId
+        ? allMessages.receiverId
+        : allMessages.senderId;
+
     if (!allMessages) {
       return res.status(401).json({ error: 'Any message was found!' });
     }
@@ -51,6 +57,14 @@ class ChatController {
     const messageUpdate = await allMessages.updateOne({
       $push: { messages: { user: senderId, message } },
     });
+
+    const targetSocket = req.connectedUsers[receiverId];
+
+    if (targetSocket) {
+      req.io.to(targetSocket).emit('sendMessage', { senderId, message });
+    }
+    // console.log(req.connectedUsers);
+    // console.log('Target', targetSocket);
 
     return res.json(messageUpdate);
   }

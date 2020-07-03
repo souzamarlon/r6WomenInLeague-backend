@@ -1,25 +1,42 @@
 import Chat from '../schemas/Chat';
+import User from '../models/User';
 
 class ChatController {
   async index(req, res) {
-    const allMessages = await Chat.findOne({
+    const { userId } = req;
+    const { id } = req.params;
+
+    const userInfo = await User.findAll({
+      where: {
+        id,
+        banned: false,
+      },
+      attributes: [
+        'id',
+        'name',
+        'email',
+        'uplay',
+        'ranked',
+        'competition',
+        'times',
+        'play_style',
+        'discord_user',
+        'region',
+      ],
+    });
+
+    const messagesReceived = await Chat.findOne({
       $and: [
         {
-          $or: [
-            { senderId: { $eq: req.userId } },
-            { senderId: { $eq: req.params.id } },
-          ],
+          $or: [{ senderId: { $eq: userId } }, { senderId: { $eq: id } }],
         },
         {
-          $or: [
-            { receiverId: { $eq: req.userId } },
-            { receiverId: { $eq: req.params.id } },
-          ],
+          $or: [{ receiverId: { $eq: userId } }, { receiverId: { $eq: id } }],
         },
       ],
     });
 
-    return res.json(allMessages);
+    return res.json({ userInfo, messagesReceived });
   }
 
   async store(req, res) {

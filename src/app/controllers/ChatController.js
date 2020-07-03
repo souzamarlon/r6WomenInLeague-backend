@@ -6,7 +6,7 @@ class ChatController {
     const { userId } = req;
     const { id } = req.params;
 
-    const userInfo = await User.findAll({
+    const userInfo = await User.findOne({
       where: {
         id,
         banned: false,

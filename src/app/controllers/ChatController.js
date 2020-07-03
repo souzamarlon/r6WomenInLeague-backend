@@ -60,6 +60,7 @@ class ChatController {
 
     const targetSocket = req.connectedUsers[receiverId];
 
+    // If the target is connected it will send the messages in real time.
     if (targetSocket) {
       req.io.to(targetSocket).emit('sendMessage', { senderId, message });
     }

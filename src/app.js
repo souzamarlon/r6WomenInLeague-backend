@@ -27,8 +27,9 @@ class App {
     this.io = socketIo(this.app);
 
     // Sentry.init(sentryConfig);
-    this.socketIo();
+
     this.middleware();
+    this.socketIo();
     this.routes();
     this.exceptionHandler();
   }

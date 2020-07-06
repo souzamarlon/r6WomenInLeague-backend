@@ -25,6 +25,9 @@ class ChatController {
       ],
     });
 
+    const targetSocket = req.connectedUsers[id];
+    // console.log('test', req.connectedUsers);
+
     const messagesReceived = await Chat.findOne({
       $and: [
         {
@@ -36,7 +39,7 @@ class ChatController {
       ],
     });
 
-    return res.json({ userInfo, messagesReceived });
+    return res.json({ userInfo, status: !!targetSocket, messagesReceived });
   }
 
   async store(req, res) {
@@ -93,7 +96,6 @@ class ChatController {
     if (targetSocket) {
       req.io.to(targetSocket).emit('sendMessage', { user: senderId, message });
     }
-    // console.log(req.connectedUsers);
     // console.log('Target', targetSocket);
 
     return res.json(messageUpdate);

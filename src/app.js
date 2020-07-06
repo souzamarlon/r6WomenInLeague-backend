@@ -54,11 +54,10 @@ class App {
     this.io.on('connection', (socket) => {
       const { user } = socket.handshake.query;
 
-      connectedUsers[user] = socket.id;
-
-      // socket.on('sendMessage', (data) => {
-      //   console.log(data);
-      // });
+      if (connectedUsers[user] !== socket.id) {
+        connectedUsers[user] = {};
+        connectedUsers[user] = socket.id;
+      }
     });
 
     this.server.use((req, res, next) => {

@@ -26,7 +26,10 @@ class ChatController {
     });
 
     const targetSocket = req.connectedUsers[id];
-    // console.log('test', req.connectedUsers);
+    console.log('test', req.connectedUsers);
+    // console.log('test', targetSocket);
+
+    // req.io.on
 
     const messagesReceived = await Chat.findOne({
       $and: [

@@ -21,10 +21,10 @@ const connectedUsers = {};
 
 class App {
   constructor() {
-    this.server = express();
+    this.app = express();
 
-    this.app = http.createServer(this.server);
-    this.io = socketIo(this.app);
+    this.server = http.createServer(this.app);
+    this.io = socketIo(this.server);
 
     // Sentry.init(sentryConfig);
 
@@ -35,19 +35,19 @@ class App {
   }
 
   middleware() {
-    // this.server.use(Sentry.Handlers.requestHandler());
-    this.server.use(cors());
+    // this.app.use(Sentry.Handlers.requestHandler());
+    this.app.use(cors());
 
-    this.server.use(express.json());
-    this.server.use(
+    this.app.use(express.json());
+    this.app.use(
       '/files',
       express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
     );
   }
 
   routes() {
-    this.server.use(routes);
-    // this.server.use(Sentry.Handlers.errorHandler());
+    this.app.use(routes);
+    // this.app.use(Sentry.Handlers.errorHandler());
   }
 
   socketIo() {
@@ -55,12 +55,13 @@ class App {
       const { user } = socket.handshake.query;
 
       if (connectedUsers[user] !== socket.id) {
-        connectedUsers[user] = {};
         connectedUsers[user] = socket.id;
       }
+
+      // console.log('Disc', socket);
     });
 
-    this.server.use((req, res, next) => {
+    this.app.use((req, res, next) => {
       req.io = this.io;
       req.connectedUsers = connectedUsers;
 
@@ -69,7 +70,7 @@ class App {
   }
 
   exceptionHandler() {
-    this.server.use(async (err, req, res, next) => {
+    this.app.use(async (err, req, res, next) => {
       if (process.env.NODE_ENV === 'development') {
         const errors = await new Youch(err, req).toJSON();
 
@@ -81,4 +82,4 @@ class App {
   }
 }
 
-export default new App().app;
+export default new App().server;

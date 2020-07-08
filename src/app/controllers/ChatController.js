@@ -26,7 +26,7 @@ class ChatController {
     });
 
     const targetSocket = req.connectedUsers[id];
-    console.log('test', req.connectedUsers);
+    // console.log('test', req.connectedUsers);
     // console.log('test', targetSocket);
 
     const messagesReceived = await Chat.findOne({
@@ -47,7 +47,6 @@ class ChatController {
     const senderId = req.userId;
     const receiverId = req.params.id;
     const { message } = req.body;
-    // console.log('TEST', );
 
     const messageCreated = await Chat.create({
       senderId,
@@ -97,7 +96,6 @@ class ChatController {
     if (targetSocket) {
       req.io.to(targetSocket).emit('sendMessage', { user: senderId, message });
     }
-    // console.log('Target', targetSocket);
 
     return res.json(messageUpdate);
   }

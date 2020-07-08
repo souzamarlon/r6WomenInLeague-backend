@@ -18,6 +18,7 @@ import routes from './routes';
 import './database';
 
 const connectedUsers = {};
+const friendSocket = {};
 
 class App {
   constructor() {
@@ -54,11 +55,13 @@ class App {
     this.io.on('connection', (socket) => {
       const { user } = socket.handshake.query;
 
-      if (connectedUsers[user] !== socket.id) {
-        connectedUsers[user] = socket.id;
-      }
+      connectedUsers[user] = socket.id;
 
-      // console.log('Disc', socket);
+      socket.on('disconnect', () => {
+        if (connectedUsers[user] === socket.id) {
+          delete connectedUsers[user];
+        }
+      });
     });
 
     this.app.use((req, res, next) => {

@@ -18,7 +18,6 @@ import routes from './routes';
 import './database';
 
 const connectedUsers = {};
-const friendSocket = {};
 
 class App {
   constructor() {
@@ -59,6 +58,8 @@ class App {
 
       socket.on('disconnect', () => {
         if (connectedUsers[user] === socket.id) {
+          socket.broadcast.emit('disconnectedUser', [user, false]);
+
           delete connectedUsers[user];
         }
       });

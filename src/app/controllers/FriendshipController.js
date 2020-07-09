@@ -9,6 +9,8 @@ class FriendshipController {
     const offset = (page - 1) * per_page;
     const limit = per_page;
 
+    const user_id = req.userId;
+
     if (accepted) {
       const friendList = await Friendship.findAll({
         offset,
@@ -60,7 +62,21 @@ class FriendshipController {
           },
         ],
       });
-      return res.json(friendList);
+      // const targetSocket = req.connectedUsers[id];
+
+      const statusAdded = friendList.map((data) => ({
+        id: data.id,
+        user_id: data.user_id,
+        user_friend: data.user_friend,
+        user: data.user,
+        friend: data.friend,
+        status:
+          data.user_id === user_id
+            ? !!req.connectedUsers[data.user_friend]
+            : !!req.connectedUsers[data.user_id],
+      }));
+
+      return res.json(statusAdded);
     }
 
     const friendList = await Friendship.findAll({

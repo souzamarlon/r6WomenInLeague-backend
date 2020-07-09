@@ -26,7 +26,7 @@ class ChatController {
     });
 
     const targetSocket = req.connectedUsers[id];
-    console.log('test', req.connectedUsers);
+    // console.log('test', req.connectedUsers);
     // console.log('test', targetSocket);
 
     const messagesReceived = await Chat.findOne({
@@ -54,13 +54,13 @@ class ChatController {
       messages: { user: senderId, message },
     });
 
-    const targetSocket = req.connectedUsers[receiverId];
+    const targetSocket = await req.connectedUsers[receiverId];
 
     // If the target is connected it will send the messages in real time.
     if (targetSocket) {
       const { _id } = messageCreated;
 
-      await req.io.to(targetSocket).emit('sendMessage', {
+      req.io.to(targetSocket).emit('sendMessage', {
         chatId: _id,
         user: senderId,
         message,
@@ -91,13 +91,11 @@ class ChatController {
       $push: { messages: { user: senderId, message } },
     });
 
-    const targetSocket = req.connectedUsers[receiverId];
+    const targetSocket = await req.connectedUsers[receiverId];
 
     // If the target is connected it will send the messages in real time.
     if (targetSocket) {
-      await req.io
-        .to(targetSocket)
-        .emit('sendMessage', { user: senderId, message });
+      req.io.to(targetSocket).emit('sendMessage', { user: senderId, message });
     }
 
     return res.json(messageUpdate);

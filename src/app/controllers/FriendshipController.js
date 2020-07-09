@@ -66,6 +66,7 @@ class FriendshipController {
 
       const statusAdded = friendList.map((data) => ({
         id: data.id,
+        accepted: data.accepted,
         user_id: data.user_id,
         user_friend: data.user_friend,
         user: data.user,

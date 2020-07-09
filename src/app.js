@@ -58,7 +58,7 @@ class App {
 
       socket.on('disconnect', () => {
         if (connectedUsers[user] === socket.id) {
-          socket.broadcast.emit('disconnectedUser', [user, false]);
+          // socket.broadcast.emit('disconnectedUser', [user, false]);
 
           delete connectedUsers[user];
         }

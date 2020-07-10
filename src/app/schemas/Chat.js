@@ -16,7 +16,11 @@ const ChatSchema = new mongoose.Schema(
           type: Number,
           required: true,
         },
-        message: { type: mongoose.Schema.Types.String, required: true },
+        message: {
+          type: mongoose.Schema.Types.String,
+          maxlength: 240,
+          required: true,
+        },
       },
     ],
     read: {

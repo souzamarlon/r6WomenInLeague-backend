@@ -88,20 +88,34 @@ class ChatController {
       return res.status(401).json({ error: 'Any message was found!' });
     }
 
-    const messageUpdate = await allMessages.updateOne({
-      $push: { messages: { user: senderId, message } },
-    });
+    // Chat Id
+    const filterById = { _id: id };
+
+    const messageUpdate = await Chat.findOneAndUpdate(
+      filterById,
+      { $push: { messages: { user: senderId, message } } },
+      {
+        new: true,
+      }
+    );
+
+    const messagesLength = messageUpdate.messages.length - 1;
+
+    const lastMessage = messageUpdate.messages[messagesLength];
 
     const targetSocket = await req.connectedUsers[receiverId];
 
     // If the target is connected it will send the messages in real time.
     if (targetSocket) {
-      req.io
-        .to(targetSocket)
-        .emit('sendMessage', { user: senderId, message, status: targetSocket });
+      req.io.to(targetSocket).emit('sendMessage', {
+        _id: lastMessage._id,
+        user: lastMessage.user,
+        message,
+        status: targetSocket,
+      });
     }
 
-    return res.json(messageUpdate);
+    return res.json(lastMessage);
   }
 }
 

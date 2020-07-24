@@ -39,6 +39,7 @@ Back-end:
 - [sequelize](https://github.com/sequelize/sequelize)
 - [yup](https://github.com/jquense/yup)
 - [sentry](https://sentry.io/)
+- [socket.io](https://socket.io/docs/server-installation/)
 
 Back-end:
 - [VS Code][vc] with [EditorConfig][vceditconfig] and [ESLint][vceslint]
@@ -47,7 +48,7 @@ Back-end:
 
 To clone and run this application, you'll need [Git](https://git-scm.com), [Node.js v10.16][nodejs] or higher + [Yarn v1.13][yarn] or higher installed on your computer.
 
-You'll also need to setup and run a Postgres and a Redis database and insert the access informations into a .env file, based on a .env.example file that is provided in the backend, front-end folders.
+You'll also need to setup and run a Postgres, mongoDB and a Redis database and insert the access informations into a .env file, based on a .env.example file that is provided in the backend, front-end folders.
 
 From your command line:
 

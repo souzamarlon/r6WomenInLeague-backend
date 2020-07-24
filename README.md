@@ -14,11 +14,11 @@
 In order to fight against discrimination, our goal is to help women in R6 to find a safe space during the game experience and connect with other women around the globe.
 </h4>
 
-
 <p align="center">
   <a href="#rocket-Libraries and Technologies">Libraries and Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#information_source-how-to-use">How To Use</a>&nbsp;&nbsp;&nbsp|&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/souzamarlon/R6WomenInLeague-frontend">Front-end project</a>&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/souzamarlon/R6WomenInLeague-mobile">Mobile project</a>&nbsp;&nbsp;&nbsp|&nbsp;&nbsp;&nbsp; 
 </p>
 
 ## :rocket: Libraries and Technologies
